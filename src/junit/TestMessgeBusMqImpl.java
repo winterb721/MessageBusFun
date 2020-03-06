@@ -19,6 +19,7 @@ public class TestMessgeBusMqImpl {
 	MessageBusMqImpl testClass = null;
 	Provider provider = null;
 	Subscriber subscriber = null;
+	Provider providerNotReg = null;
 	@Before
 	public void testSetup() {
 				
@@ -31,6 +32,9 @@ public class TestMessgeBusMqImpl {
 		subscriber = new Subscriber();
 		subscriber.setChannel("testChannel1");
 		subscriber.setSubscriberName("subscriber1");
+		providerNotReg = new Provider();
+		providerNotReg.setChannel("testChannel1");
+		providerNotReg.setProviderName("testProv2");
 	}
 	 
 	@Test
@@ -38,6 +42,12 @@ public class TestMessgeBusMqImpl {
 		String s =  testClass.sendMessage("a message", provider);
 		assertNotNull(s);
 		assertEquals("Message in queue", s);
+	}
+	
+	@Test
+	public void testSendMessageProviderNotReg() {
+		String s = testClass.sendMessage("a message", providerNotReg);
+		assertEquals("Not a regestered provider!", s);
 	}
 
 	@Test
@@ -50,7 +60,6 @@ public class TestMessgeBusMqImpl {
 	public void testRegisterSubcriber() {
 		testClass.registerSubcriber("subscriber1", "testChannel1");
 		assertTrue(testClass.getSubscribers().size() == 2);
-				
 	}
 
 	@Test
@@ -62,18 +71,20 @@ public class TestMessgeBusMqImpl {
 
 	@Test
 	public void testRegisterProvider() {
-		testClass.registerProvider("testProv1", "testChannel1");
-		assertFalse(testClass.getProviders().size() == 2);
 		testClass.registerProvider("testProv2", "testChannel1");
 		assertTrue(testClass.getProviders().size() == 2);
-		
+	}
+	
+	@Test 
+	public void testRegisterExistingProvider() {
+		testClass.registerProvider("testProv1", "testChannel1");
+		assertFalse(testClass.getProviders().size() == 2);
 	}
 
 	@Test
 	public void testDeRegiterProvider() {
 		testClass.deRegiterProvider("testProv2", "testChannel1");
 		assertTrue(testClass.getProviders().size() == 1);
-		
 	}
 
 	@Test
@@ -81,7 +92,6 @@ public class TestMessgeBusMqImpl {
 		testClass.readChannels();
 		assertTrue(testClass.getChannels().size() ==1);
 		assertEquals(testClass.getChannels().get(0), "testChannel1");
-		
 	}
 
 }

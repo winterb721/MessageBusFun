@@ -1,5 +1,5 @@
 /**
- * This class implements the MessageBussMq interface.   
+ * This class implements MessageBussMq.   
  */
 package Model;
 
@@ -93,8 +93,6 @@ public class MessageBusMqImpl implements MessageBusMq {
 
 	@Override
 	public String registerProvider(String aProviderName, String aChannel) {
-		//first check for that provider in the list, a provider can only be 
-		// in once at a time. if not in the list register. 
 		
 		Provider provider = getProvider(aProviderName, aChannel);
 		
@@ -113,7 +111,7 @@ public class MessageBusMqImpl implements MessageBusMq {
 		Provider provider = getProvider(aProviderName, aChannel);
 		
 		isProviderRegistered(provider, true);
-		// remove the provider from the list
+		
 	}
 
 	@Override
